@@ -1,11 +1,10 @@
-version: '3.8'
-
 services:
   web:
     build: ./web
-    command: uvicorn app.main:app --reload --workers 1 --host 127.0.0.1
+    command: uvicorn app.main:app --proxy-headers --host 0.0.0.0 --port 80
     ports:
       - "80:80"
+    restart: always
     depends_on:
       - grafana
       - db
