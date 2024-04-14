@@ -1,11 +1,10 @@
-version: '3.8'
-
 services:
   web:
     build: ./web
-    command: uvicorn app.main:app --reload --workers 1 --host 127.0.0.1
+    command: uvicorn app.main:app --proxy-headers --host 0.0.0.0 --port 80
     ports:
       - "80:80"
+    restart: always
     depends_on:
       - grafana
       - db
@@ -15,12 +14,16 @@ services:
 
     
 
+  grafana:
+    image: grafana/grafana:latest
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - db
+
   db:
     image: influxdb
     ports: 
       - "8086:8086"
 
-  grafana:
-    image: grafana/grafana
-    ports: 
-      - "3000:3000"
+# TODO volumes or mounts
