@@ -8,11 +8,15 @@ services:
     depends_on:
       - grafana
       - db
+    volumes:
+      - ./web/app:/code/
     # Pass test InfluxDB credentials as environmental variables in Docker container
     environment:
-      - env 
-
-    
+      - INFLUXDB_USER=labview
+      - INFLUXDB_PASSWORD=labview
+      - INFLUXDB_ORGANIZATION=labview
+      - INFLUXDB_BUCKET=labview
+      - INFLUXDB_API_TOKEN=gqswl5e1Vle8UXP6WekzyqDD54GHQpoe7qIxjkckYc62-zHIYz9jq7MB-Ci8d3MTAaynSltGHNrGdAPLBzH0LA==
 
   grafana:
     image: grafana/grafana:latest
