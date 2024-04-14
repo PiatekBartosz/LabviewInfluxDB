@@ -1,7 +1,7 @@
 services:
   web:
     build: ./web
-    command: uvicorn app.main:app --proxy-headers --host 0.0.0.0 --port 80
+    command: uvicorn app.main:app --proxy-headers --host 0.0.0.0 --port 80 --app-dir /code/web
     ports:
       - "80:80"
     restart: always
@@ -9,7 +9,7 @@ services:
       - grafana
       - db
     volumes:
-      - ./web/app:/code/
+      - .:/code/
     # Pass test InfluxDB credentials as environmental variables in Docker container
     environment:
       - INFLUXDB_USER=labview
