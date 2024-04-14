@@ -9,6 +9,11 @@ services:
     depends_on:
       - grafana
       - db
+    # Pass test InfluxDB credentials as environmental variables in Docker container
+    environment:
+      - env 
+
+    
 
   db:
     image: influxdb
