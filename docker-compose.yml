@@ -12,12 +12,11 @@ services:
       - .:/code/
     # Pass test InfluxDB credentials as environmental variables in Docker container
     environment:
-      - INFLUXDB_USER=labview
-      - INFLUXDB_PASSWORD=labview
-      - INFLUXDB_ORGANIZATION=labview
-      - INFLUXDB_BUCKET=labview
-      - INFLUXDB_API_TOKEN=gqswl5e1Vle8UXP6WekzyqDD54GHQpoe7qIxjkckYc62-zHIYz9jq7MB-Ci8d3MTAaynSltGHNrGdAPLBzH0LA==
-
+      - INFLUXDB_USER=${INFLUXDB_USERNAME}
+      - INFLUXDB_PASSWORD=${INFLUXDB_USERNAME}
+      - INFLUXDB_ORGANIZATION=${INFLUXDB_ORGANIZATION}
+      - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+      - INFLUXDB_API_TOKEN=${INFLUXDB_API_TOKEN}
   # grafana:
   #   image: grafana/grafana:latest
   #   ports: 
@@ -32,14 +31,10 @@ services:
     volumes:
       - "./db/data:/var/lib/influxdb2"
       - "./db/cfg:/etc/influxdb2"
-    # inital configuration
-    # environment:
-    #   - DOCKER_INFLUXDB_INIT_MODE=setup
-    #   - DOCKER_INFLUXDB_INIT_USERNAME=labview
-    #   - DOCKER_INFLUXDB_INIT_PASSWORD=labview_password
-    #   - DOCKER_INFLUXDB_INIT_ORG=labview
-    #   - DOCKER_INFLUXDB_INIT_BUCKET=labview
-    #   - DOCKER_INFLUXDB_API_TOKEN=gqswl5e1Vle8UXP6WekzyqDD54GHQpoe7qIxjkckYc62-zHIYz9jq7MB-Ci8d3MTAaynSltGHNrGdAPLBzH0LA==
-    # command:
-    #   - influxdb:2
-
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=labview
+      - DOCKER_INFLUXDB_INIT_PASSWORD=labview_password
+      - DOCKER_INFLUXDB_INIT_ORG=labview
+      - DOCKER_INFLUXDB_INIT_BUCKET=labview
+      - DOCKER_INFLUXDB_API_TOKEN=gqswl5e1Vle8UXP6WekzyqDD54GHQpoe7qIxjkckYc62-zHIYz9jq7MB-Ci8d3MTAaynSltGHNrGdAPLBzH0LA==

@@ -20,4 +20,3 @@ async def read_item(item_id: int, q: Union[str, None] = None):
 # Test purposes only
 app.include_router(read_router)
 app.include_router(write_router)
-app.include_router(test_router)
