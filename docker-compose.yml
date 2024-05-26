@@ -1,18 +1,22 @@
 services:
   web:
     build: ./web
-    command: uvicorn app.main:app --proxy-headers --host 0.0.0.0 --port 80
+    command: uvicorn app.main:app --proxy-headers --host 0.0.0.0 --port 80 --app-dir /code/web --reload
     ports:
       - "80:80"
     restart: always
     depends_on:
       - grafana
       - db
+    volumes:
+      - .:/code/
     # Pass test InfluxDB credentials as environmental variables in Docker container
     environment:
-      - env 
-
-    
+      - INFLUXDB_USER=labview
+      - INFLUXDB_PASSWORD=labview
+      - INFLUXDB_ORGANIZATION=labview
+      - INFLUXDB_BUCKET=labview
+      - INFLUXDB_API_TOKEN=gqswl5e1Vle8UXP6WekzyqDD54GHQpoe7qIxjkckYc62-zHIYz9jq7MB-Ci8d3MTAaynSltGHNrGdAPLBzH0LA==
 
   grafana:
     image: grafana/grafana:latest
@@ -22,8 +26,20 @@ services:
       - db
 
   db:
-    image: influxdb
+    image: influxdb:2.7.6
     ports: 
       - "8086:8086"
+    volumes:
+      - "./db/data:/var/lib/influxdb2"
+      - "./db/cfg:/etc/influxdb2"
+    # inital configuration
+    # environment:
+    #   - DOCKER_INFLUXDB_INIT_MODE=setup
+    #   - DOCKER_INFLUXDB_INIT_USERNAME=labview
+    #   - DOCKER_INFLUXDB_INIT_PASSWORD=labview_password
+    #   - DOCKER_INFLUXDB_INIT_ORG=labview
+    #   - DOCKER_INFLUXDB_INIT_BUCKET=labview
+    #   - DOCKER_INFLUXDB_API_TOKEN=gqswl5e1Vle8UXP6WekzyqDD54GHQpoe7qIxjkckYc62-zHIYz9jq7MB-Ci8d3MTAaynSltGHNrGdAPLBzH0LA==
+    # command:
+    #   - influxdb:2
 
-# TODO volumes or mounts
