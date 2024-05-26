@@ -39,3 +39,14 @@ class UnauthorizedException(Exception):
 class BadRequest(Exception):
     HTTP_RESPONSE_STATUS_CODE = 400
     DESCRITPION = "Bad request"
+
+EXCEPTION_MAPPING = {
+    400: BadRequest,
+    401: UnauthorizedException,
+    404: NotFoundException,
+    413: RequestEntityTooLargeException,
+    422: UnprocessableEntryException,
+    429: TooManyRequestsException,
+    500: InternalServerException,
+    503: InfluxNotAvailableException
+}

@@ -1,7 +1,9 @@
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
+from influxdb_client.rest import ApiException
 from pydantic import SecretStr
-from influx_client_wrapper.influx_exceptions import *
+from influx_client_wrapper.influx_exceptions import EXCEPTION_MAPPING, UnknownException
+
 
 class InfluxClientWrapper:
     """
@@ -27,11 +29,20 @@ class InfluxClientWrapper:
             url=url, token=token.get_secret_value(), org=self._org)
 
     async def record_timeseries(self, measurement: float, timestamp: str, city: str, country: str, card_id: int) -> None:
-        write_api = self._client.write_api(write_options=SYNCHRONOUS)
-        point = (Point("Labview").tag("city", city.lower()).tag("country", country.lower()).tag(
-            "card_id", card_id).field("voltage_V", measurement))
-        write_api(bucket=self._bucket, org=self._org, record=point)
+        point = (
+            Point("Labview")
+            .tag("city", city.lower())
+            .tag("country", country.lower())
+            .tag("card_id", card_id)
+            .field("voltage_V", measurement)
+        )
+        await self._write_data(point)
 
     async def _write_data(self, point: Point):
+        write_api = self._client.write_api(write_options=SYNCHRONOUS)
         try:
-            result 
+            ret = write_api(bucket=self._bucket, org=self._org, record=point)
+            return ret
+        except ApiException as e:
+            exception = EXCEPTION_MAPPING.get(e.status, UnknownException)
+            raise exception
