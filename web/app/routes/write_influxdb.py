@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from fastapi.response import JSONResponse
+# from fastapi.response import JSONResponse
 from influx_client_wrapper.influx_client_wrapper import InfluxClientWrapper
 from influx_client_wrapper.influx_configuration import InfluxConfiguration
 
@@ -25,14 +25,29 @@ async def write_api_post(labviewData: Request):
         bucket=InfluxConfiguration.INFLUX_BUCKET,
         org=InfluxConfiguration.INFLUX_ORG,
         token=InfluxConfiguration.INFLUX_TOKEN
+        url=InfluxConfiguration.INFLUX_URL
     )
 
     try:
-        await client.record_timeseries(
-            measurement=)
+        for measurement in body.Array:
+            t0 = measurement.t0
+            dt = measurement.dt
+            y_values = measurement.y
 
-    sucess_respose =
+            points = []
 
-    failure_response =
 
-    return await str(labviewData.json())
+            await client.record_timeseries(
+                measurement=1111,
+                timestamp=,
+                city,
+                country: str,
+                card_id: int
+            )
+    except Exception as e:
+        raise e
+
+    # failure_response =
+    print(str(labviewData.json()))
+
+    return await None

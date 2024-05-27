@@ -6,7 +6,7 @@ services:
       - "80:80"
     restart: always
     depends_on:
-      - grafana
+      # - grafana
       - db
     volumes:
       - .:/code/
@@ -17,13 +17,14 @@ services:
       - INFLUXDB_ORGANIZATION=labview
       - INFLUXDB_BUCKET=labview
       - INFLUXDB_API_TOKEN=gqswl5e1Vle8UXP6WekzyqDD54GHQpoe7qIxjkckYc62-zHIYz9jq7MB-Ci8d3MTAaynSltGHNrGdAPLBzH0LA==
+      - INFLUXDB_URL='localhost:8086'
 
-  grafana:
-    image: grafana/grafana:latest
-    ports: 
-      - "3000:3000"
-    depends_on:
-      - db
+  # grafana:
+  #   image: grafana/grafana:latest
+  #   ports: 
+  #     - "3000:3000"
+  #   depends_on:
+  #     - db
 
   db:
     image: influxdb:2.7.6
