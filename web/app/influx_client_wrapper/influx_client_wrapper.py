@@ -2,7 +2,8 @@ from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 from influxdb_client.rest import ApiException
 from pydantic import SecretStr
-from influx_client_wrapper.influx_exceptions import EXCEPTION_MAPPING, UnknownException
+from app.influx_client_wrapper.influx_exceptions import EXCEPTION_MAPPING, UnknownException
+from collections.abc import Iterable
 
 
 class InfluxClientWrapper:
@@ -25,23 +26,39 @@ class InfluxClientWrapper:
         """
         self._org = org
         self._bucket = bucket
+        # TODO secret pass token
+        print("variables: ")
+        print(" url: ", url, " ", " token: ", token, " org: ", org)
         self._client = InfluxDBClient(
-            url=url, token=token.get_secret_value(), org=self._org)
+            url=url, token=token, org=self._org)
 
-    async def record_timeseries(self, measurement: float, timestamp: str, city: str, country: str, card_id: int) -> None:
+    def record_timeseries(self, measurement: float, timestamp: str, city: str, country: str, card_id: int) -> None:
+        print("DEBUG: ")
+        print(measurement)
+        print(type(measurement))
+        print(timestamp)
+        print(type(timestamp))
+        print(city)
+        print(type(city))
+        print(country)
+        print(type(country))
+        print(card_id)
+        print(type(card_id))
+
+            # .tag("city", city.lower())
+            # .tag("country", country.lower())
+            # .tag("card_id", card_id)
+
         point = (
             Point("Labview")
-            .tag("city", city.lower())
-            .tag("country", country.lower())
-            .tag("card_id", card_id)
             .field("voltage_V", measurement)
         )
-        await self._write_data(point)
+        self._write_data(point)
 
-    async def _write_data(self, point: Point):
+    def _write_data(self, point: Point):
         write_api = self._client.write_api(write_options=SYNCHRONOUS)
         try:
-            ret = write_api(bucket=self._bucket, org=self._org, record=point)
+            ret = write_api.write(bucket=self._bucket, org=self._org, record=point)
             return ret
         except ApiException as e:
             exception = EXCEPTION_MAPPING.get(e.status, UnknownException)

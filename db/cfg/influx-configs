@@ -2,6 +2,12 @@
   url = "http://localhost:8086"
   token = "BugsTEPS61M4EGYw4cwZVk4LYprFUwXU4au8Wg7xfql5qXZmWmcHy8j2bNIkZiAvFJns6xvBMMFHUGUMOCxccA=="
   org = "labview"
+  previous = true
+
+[labview_cfg]
+  url = "https://localhost:8086/write_api"
+  token = "Y3OnJaIe-lVrnDET1XJ1M0aAgnF5obMYUxLzzSfn5DKGs4yd8bvUMYifbasX23gTaSAXH19FoNPNxLkHCri-6w=="
+  org = "labview"
   active = true
 # 
 # [eu-central]

@@ -1,7 +1,7 @@
 services:
   web:
     build: ./web
-    command: uvicorn app.main:app --proxy-headers --host 0.0.0.0 --port 80 --app-dir /code/web --reload
+    command: uvicorn app.main:app --proxy-headers --host web --port 80 --app-dir /code/web --reload
     ports:
       - "80:80"
     restart: always
@@ -13,11 +13,12 @@ services:
     # Pass test InfluxDB credentials as environmental variables in Docker container
     environment:
       - INFLUXDB_USER=labview
-      - INFLUXDB_PASSWORD=labview
+      - INFLUXDB_PASSWORD=labview_password
       - INFLUXDB_ORGANIZATION=labview
       - INFLUXDB_BUCKET=labview
-      - INFLUXDB_API_TOKEN=gqswl5e1Vle8UXP6WekzyqDD54GHQpoe7qIxjkckYc62-zHIYz9jq7MB-Ci8d3MTAaynSltGHNrGdAPLBzH0LA==
-      - INFLUXDB_URL='localhost:8086'
+      - INFLUXDB_API_TOKEN=Y3OnJaIe-lVrnDET1XJ1M0aAgnF5obMYUxLzzSfn5DKGs4yd8bvUMYifbasX23gTaSAXH19FoNPNxLkHCri-6w==
+      - INFLUXDB_URL="db:8086"
+      
 
   # grafana:
   #   image: grafana/grafana:latest
@@ -44,3 +45,13 @@ services:
     # command:
     #   - influxdb:2
 
+# networks:
+#   vlan:
+#     driver: macvlan
+#     driver_opts: 
+#       parent: eth0
+#     ipam:
+#       config:
+#         - subnet: "192.168.0.0/24"
+#         ip_range: "162.168.0.64/26"
+#         gateway: "192.168.0.1"
