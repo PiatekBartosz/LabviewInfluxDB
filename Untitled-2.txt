@@ -1,0 +1,10 @@
+given folder structure:
+
+app:
+    influx_client_wrapper:
+        __init__.py
+        influx_client_wraper.py
+    routes:
+        __init__.py
+        write_influxdb.py
+

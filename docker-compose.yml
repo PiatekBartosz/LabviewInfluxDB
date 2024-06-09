@@ -1,7 +1,7 @@
 services:
   web:
     build: ./web
-    command: uvicorn app.main:app --proxy-headers --host web --port 80 --app-dir /code/web --reload
+    command: uvicorn app.main:app --proxy-headers --host 172.16.0.2 --port 80 --app-dir /code/web --reload
     ports:
       - "80:80"
     restart: always
@@ -17,7 +17,10 @@ services:
       - INFLUXDB_ORGANIZATION=labview
       - INFLUXDB_BUCKET=labview
       - INFLUXDB_API_TOKEN=Y3OnJaIe-lVrnDET1XJ1M0aAgnF5obMYUxLzzSfn5DKGs4yd8bvUMYifbasX23gTaSAXH19FoNPNxLkHCri-6w==
-      - INFLUXDB_URL="db:8086"
+      - INFLUXDB_URL="172.16.0.3:8086"
+    networks:
+      app_network:
+        ipv4_address: 172.16.0.2
       
 
   # grafana:
@@ -34,6 +37,9 @@ services:
     volumes:
       - "./db/data:/var/lib/influxdb2"
       - "./db/cfg:/etc/influxdb2"
+    networks:
+      app_network:
+        ipv4_address: 172.16.0.3
     # inital configuration
     # environment:
     #   - DOCKER_INFLUXDB_INIT_MODE=setup
@@ -45,13 +51,10 @@ services:
     # command:
     #   - influxdb:2
 
-# networks:
-#   vlan:
-#     driver: macvlan
-#     driver_opts: 
-#       parent: eth0
-#     ipam:
-#       config:
-#         - subnet: "192.168.0.0/24"
-#         ip_range: "162.168.0.64/26"
-#         gateway: "192.168.0.1"
+networks:
+  app_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.0.0/16 # submask 255.255.255.0
+          gateway: 172.16.0.1

@@ -40,13 +40,14 @@ async def write_api_post(payload: Any = Body(None)):
         city = payload["City"]
         country = payload["Country"]
         card_id = payload["CardId"]
-        # i = 0
-        # for measurement in body["Array"]:
-        #     t0 =
-        #     dt = measurement.dt
-        #     y_values = measurement.y
 
-        #     points = []
+        print("Test write data:")
+        print("array = ", dict_mesurement)
+        print("to = ", t0)
+        print("measurement = ", measurement)
+        print("city = ", city)
+        print("country = ", country)
+        print("card_id = ", card_id)
 
         await client.record_timeseries(
             measurement=float(measurement),
