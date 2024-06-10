@@ -23,20 +23,25 @@ services:
         ipv4_address: 172.16.0.2
       
 
-  # grafana:
-  #   image: grafana/grafana:latest
-  #   ports: 
-  #     - "3000:3000"
-  #   depends_on:
-  #     - db
+  grafana:
+    image: grafana/grafana:latest
+    ports: 
+      - "3000:3000"
+    volumes:
+      - ./grafana:/var/lib/grafana:rw
+    depends_on:
+      - db
+    networks:
+      app_network:
+        ipv4_address: 172.16.0.4
 
   db:
     image: influxdb:2.7.6
     ports: 
       - "8086:8086"
     volumes:
-      - "./db/data:/var/lib/influxdb2"
-      - "./db/cfg:/etc/influxdb2"
+      - "./db/data:/var/lib/influxdb2:rw"
+      - "./db/cfg:/etc/influxdb2:rw"
     networks:
       app_network:
         ipv4_address: 172.16.0.3
