@@ -1,69 +1,38 @@
-# influx-cli
+# About 
+This project contains a labview app that simulates generating 
+time domain data and contenerized application in FastAPI for 
+storing data in InfluxDB and presenting with Grafana. 
 
-CLI for managing resources in InfluxDB v2
+# Prerequisites
+1. Install [Docker Desktop](https://docs.docker.com/desktop/install/windows-install/) for Windows (docker and 
+docker-compose needs to be installed).
+2. Install labview runtime / labview.
 
-## Motivation
+# Run 
+1. Run Docker Desktop 
+2. Run command: `docker compose up`
+3. For InfluxDB Web UI open: `localhost:8086` 
+4. For Grafana Web UI open: `localhost:3000` 
+5. Run labview application (make sure `docker compose up` was run first)
 
-This repository decouples the `influx` CLI from the OSS `influxdb` codebase. Our goals are to:
-1. Make it easier to keep the CLI up-to-date with InfluxDB Cloud API changes
-2. Enable faster turn-around on fixes/features that only affect the CLI
-3. Allow the CLI to be built & released for a wider range of platforms than the server can support
+![alt text](image.png)
 
-## Building the CLI
+- START - start the acquisition, 
+- SETTINGS - set the aquired signal type,
+- STOP - stop the acquisition,
+- EXIT - exit the applicaiton. 
 
-Follow these steps to build the CLI. If you're updating your CLI build, see *Updating openapi* below.
-1. Clone this repo (influx-cli) and change to your _influx-cli_ directory.
+6. Login into InfluxDB:
+- LOGIN: `labview` 
+- PASSWORD: `labview_password`
 
-   ```
-   git clone git@github.com:influxdata/influx-cli.git
-   cd influx-cli
-   ```
-   
-2. Build the CLI. The `make` and `make influx` commands write the new binary to `bin/$(GOOS)/influx`.
-   
-   ```
-   make
-   ```
-   
-### Updating openapi
+![alt text](docs/influx.png)
 
-If you change or update your branch, you may also need to update `influx-cli/openapi` and regenerate the client code.
-`influx-cli/openapi` is a Git submodule that contains the underlying API contracts and client used by the CLI.
-We use [`OpenAPITools/openapi-generator`](https://github.com/OpenAPITools/openapi-generator) to generate
-the HTTP client.
+7. Login into Grafana
+- LOGIN: `admin`
+- PASSWORD: `labview_password`
+- open `Last 5 min` dashboard
 
-To update, run the following commands in your `influx-cli` repo:
+![alt text](docs/grafana1.png)
 
-1. Update the _openapi_ Git submodule. The following command pulls the latest commits for the branch and all submodules.
-
-   `git pull --recurse-submodules`
-   
-2. With [Docker](https://docs.docker.com/get-docker/) running locally, regenerate _openapi_.
-
-   `make openapi`
-   
-3. Rebuild the CLI
-
-   `make`
- 
-## Running the CLI
-
-After building, use `influx -h` to see the list of available commands.
-
-### Enabling Completions
-
-The CLI supports generating completions for `bash`, `zsh`, and `powershell`. To enable completions for a
-single shell session, run one of these commands:
-```
-# For bash:
-source <(influx completion bash)
-# For zsh:
-source <(influx completion zsh)
-# For pwsh:
-Invoke-Expression ((influx completion powershell) -join "`n`")
-```
-To enable completions across sessions, add the appropriate line to your shell's login profile (i.e. `~/.bash_profile`).
-
-## Testing
-
-Run `make test` to run unit tests.
+![alt text](docs/grafana2.png)
