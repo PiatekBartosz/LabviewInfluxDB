@@ -30,36 +30,23 @@ class InfluxClientWrapper:
         print("variables: ")
         print(" url: ", url, " ", " token: ", token, " org: ", org)
         self._client = InfluxDBClient(
-            url=url, token=token, org=self._org)
+            url="172.16.0.3:8086", token=token, org=self._org)
+        self.write_api = None
 
-    def record_timeseries(self, measurement: float, timestamp: str, city: str, country: str, card_id: int) -> None:
-        print("DEBUG: ")
-        print(measurement)
-        print(type(measurement))
-        print(timestamp)
-        print(type(timestamp))
-        print(city)
-        print(type(city))
-        print(country)
-        print(type(country))
-        print(card_id)
-        print(type(card_id))
-
-            # .tag("city", city.lower())
-            # .tag("country", country.lower())
-            # .tag("card_id", card_id)
-
+    def record_timeseries(self, measurement: float, timestamp: str, city: str, country: str, card_id: str) -> None:
+        self.write_api = self._client.write_api(write_options=SYNCHRONOUS)
         point = (
-            Point("Labview")
-            .field("voltage_V", measurement)
+            Point("labview_measurement")
+            .tag("city", city)
+            .tag("country", country)
+            .tag("card_id", card_id)
+            .field("voltage_V", float(measurement))
+            .time(timestamp)
         )
+        print("point: ", point)
         self._write_data(point)
 
     def _write_data(self, point: Point):
-        write_api = self._client.write_api(write_options=SYNCHRONOUS)
-        try:
-            ret = write_api.write(bucket=self._bucket, org=self._org, record=point)
-            return ret
-        except ApiException as e:
-            exception = EXCEPTION_MAPPING.get(e.status, UnknownException)
-            raise exception
+        ret = self.write_api.write(bucket=self._bucket,
+                                   org=self._org, record=point)
+        return ret

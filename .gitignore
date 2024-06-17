@@ -15,3 +15,7 @@
 *.aliases
 *.lvlps
 .cache/
+
+# python 
+__pycache__/
+.py[cod]
