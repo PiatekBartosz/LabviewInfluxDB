@@ -15,7 +15,7 @@
 <Name>Signal Type &lt;Replace Me&gt;</Name>
 <Choice>Sine Wave</Choice>
 <Choice>Square with Noise</Choice>
-<Val>1</Val>
+<Val>0</Val>
 </EW>
 </Cluster>
 <Cluster>

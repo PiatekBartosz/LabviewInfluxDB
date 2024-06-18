@@ -7,7 +7,7 @@ storing data in InfluxDB and presenting with Grafana.
 1. Install [Docker Desktop](https://docs.docker.com/desktop/install/windows-install/) for Windows (docker and 
 docker-compose needs to be installed).
 2. Install labview runtime / labview.
-3. Install JKI JSON and REST API library.
+3. Install JKI JSON and REST API Client library.
 
 # Run 
 1. Run Docker Desktop 
@@ -37,3 +37,4 @@ docker-compose needs to be installed).
 ![alt text](docs/grafana1.png)
 
 ![alt text](docs/grafana2.png)
+WWWW
